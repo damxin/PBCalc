@@ -105,6 +105,9 @@ if __name__ == '__main__':
         df = ts.get_today_all()
         df.to_sql(trunctablename, engine, if_exists='append')
         tradedate=time.strftime('%Y%m%d',time.localtime(time.time()))
+        strsqltmp = ("DELETE FROM stock_daydata WHERE statdate = todaytradedate")
+        strsql = strsqltmp.replace('todaytradedate',str(tradedate))
+        ms.execNotSelectMysql(mcursor,strsql,mconnect)
         strsqltmp = ("INSERT INTO stock_daydata ( "
                     "stockcode,pubdate,statdate,roe,closeprice, "
                     "openprice,highprice,lowprice,volume, "
@@ -114,11 +117,7 @@ if __name__ == '__main__':
                            "a.open,a.high,a.low,a.volume, "
                            "a.turnoverratio,a.amount,a.per, "
                            "a.pb,a.mktcap,a.nmc "
-                      "FROM stock_daydata b "
-                      " LEFT JOIN today_all_tmp a "
-                              "ON (b.stockcode = a.code "
-                                "AND b.statdate = todaytradedate)"
-                     "WHERE b.stockcode IS NULL")
+                      "FROM today_all_tmp a ")
         strsql = strsqltmp.replace('todaytradedate',str(tradedate))
         ms.execNotSelectMysql(mcursor,strsql,mconnect)
         del strsql,strsqltmp

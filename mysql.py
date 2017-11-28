@@ -41,6 +41,7 @@ def getMsqlCursor(msqlcon):
     作用:sql语句执行
 '''
 def execNotSelectMysql(msqlcursor,strsql,msqlcon):
+    print("\r\nexecuse"+strsql)
     try:
         msqlcursor.execute(strsql)
     except Exception as e:
